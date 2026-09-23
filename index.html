@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Yaşam Çizgisi Analizi</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+    margin: 0;
+
+    min-height: 100vh;
+
+    background:
+        radial-gradient(circle at top, #171326 0%, #050509 55%);
+
+    color: white;
+
+    font-family: Arial, sans-serif;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    overflow-x: hidden;
+}
+
+
+.container {
+
+    width: 92%;
+
+    max-width: 650px;
+
+    text-align: center;
+}
+
+
+h1 {
+
+    font-size: 42px;
+
+    letter-spacing: 6px;
+
+    margin-bottom: 10px;
+
+    text-shadow:
+        0 0 20px rgba(130,80,255,0.5);
+}
+
+
+.subtitle {
+
+    color: #888;
+
+    margin-bottom: 35px;
+
+    font-size: 15px;
+}
+
+
+.box {
+
+    background: rgba(13,13,20,0.95);
+
+    border: 1px solid #292936;
+
+    border-radius: 16px;
+
+    padding: 30px;
+
+    box-shadow:
+        0 0 50px rgba(100,0,255,0.15);
+}
+
+
+label {
+
+    display: block;
+
+    text-align: left;
+
+    color: #aaa;
+
+    font-size: 13px;
+
+    margin-bottom: 8px;
+
+    margin-top: 18px;
+}
+
+
+input {
+
+    width: 100%;
+
+    padding: 15px;
+
+    background: #07070b;
+
+    color: white;
+
+    border: 1px solid #3a3a46;
+
+    border-radius: 8px;
+
+    font-size: 16px;
+
+    outline: none;
+}
+
+
+input:focus {
+
+    border-color: #8055ff;
+
+    box-shadow:
+        0 0 12px rgba(128,85,255,0.2);
+}
+
+
+.zodiac {
+
+    margin-top: 12px;
+
+    padding: 13px;
+
+    background: #11111a;
+
+    border: 1px solid #292936;
+
+    border-radius: 8px;
+
+    color: #9b7aff;
+
+    font-weight: bold;
+
+    min-height: 45px;
+}
+
+
+button {
+
+    width: 100%;
+
+    padding: 16px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #6c35ff;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    margin-top: 25px;
+
+    transition: 0.2s;
+}
+
+
+button:hover {
+
+    background: #8250ff;
+
+    transform: translateY(-1px);
+}
+
+
+#analysis {
+
+    display: none;
+}
+
+
+.loading-text {
+
+    margin: 15px 0;
+
+    color: #aaa;
+
+    min-height: 20px;
+}
+
+
+.progress {
+
+    width: 100%;
+
+    height: 8px;
+
+    background: #222;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+
+.progress-bar {
+
+    width: 0%;
+
+    height: 100%;
+
+    background: #8b5cff;
+
+    transition: width 0.5s;
+
+    box-shadow:
+        0 0 12px #8b5cff;
+}
+
+
+#result {
+
+    display: none;
+}
+
+
+.result-title {
+
+    color: #9b7aff;
+
+    letter-spacing: 4px;
+
+    font-size: 13px;
+
+    margin-bottom: 15px;
+}
+
+
+.person-name {
+
+    font-size: 19px;
+
+    color: #ddd;
+
+    margin-bottom: 5px;
+}
+
+
+.person-zodiac {
+
+    color: #8060e8;
+
+    font-size: 14px;
+
+    margin-bottom: 25px;
+}
+
+
+.date {
+
+    font-size: 34px;
+
+    font-weight: bold;
+
+    margin: 15px 0;
+
+    text-shadow:
+        0 0 20px rgba(255,255,255,0.15);
+}
+
+
+.event {
+
+    font-size: 22px;
+
+    line-height: 1.5;
+
+    margin: 25px 0;
+
+    color: #f1f1f1;
+}
+
+
+.detail {
+
+    color: #999;
+
+    line-height: 1.8;
+
+    font-size: 14px;
+}
+
+
+.match {
+
+    margin-top: 28px;
+
+    color: #8b6aff;
+
+    font-size: 14px;
+}
+
+
+.restart {
+
+    margin-top: 28px;
+
+    background: #20202c;
+}
+
+
+.restart:hover {
+
+    background: #303044;
+}
+
+
+.hidden {
+
+    display: none;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <h1>YAŞAM ÇİZGİSİ</h1>
+
+
+    <div class="subtitle">
+
+        Yaşam çizginizdeki önemli dönüm noktalarını analiz edin.
+
+    </div>
+
+
+    <!-- BAŞLANGIÇ -->
+
+    <div class="box" id="start">
+
+
+        <label for="name">
+
+            Adınız
+
+        </label>
+
+
+        <input
+
+            type="text"
+
+            id="name"
+
+            placeholder="Adınızı girin"
+
+            maxlength="40"
+
+        >
+
+
+        <label for="birthDate">
+
+            Doğum tarihiniz
+
+        </label>
+
+
+        <input
+
+            type="date"
+
+            id="birthDate"
+
+        >
+
+
+        <label>
+
+            Burcunuz
+
+        </label>
+
+
+        <div class="zodiac" id="zodiac">
+
+            Doğum tarihinizi girin
+
+        </div>
+
+
+        <button onclick="startAnalysis()">
+
+            ANALİZİ BAŞLAT
+
+        </button>
+
+
+    </div>
+
+
+    <!-- ANALİZ -->
+
+    <div class="box" id="analysis">
+
+
+        <div
+
+            id="loadingText"
+
+            class="loading-text"
+
+        >
+
+            Analiz başlatılıyor...
+
+        </div>
+
+
+        <div class="progress">
+
+            <div
+
+                id="progressBar"
+
+                class="progress-bar"
+
+            ></div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- SONUÇ -->
+
+    <div class="box" id="result">
+
+
+        <div class="result-title">
+
+            YAŞAM ÇİZGİSİ ANALİZİ
+
+        </div>
+
+
+        <div
+
+            class="person-name"
+
+            id="personName"
+
+        ></div>
+
+
+        <div
+
+            class="person-zodiac"
+
+            id="personZodiac"
+
+        ></div>
+
+
+        <div
+
+            class="date"
+
+            id="eventDate"
+
+        ></div>
+
+
+        <div
+
+            class="event"
+
+            id="eventTitle"
+
+        ></div>
+
+
+        <div
+
+            class="detail"
+
+            id="eventDetail"
+
+        ></div>
+
+
+        <div class="match">
+
+            Yaşam çizgisi eşleşmesi: %87
+
+        </div>
+
+
+        <button
+
+            class="restart"
+
+            onclick="location.reload()"
+
+        >
+
+            YENİ ANALİZ
+
+        </button>
+
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =====================================================
+   300 OLAY
+   30 KATEGORİ x 10 VARYASYON
+   ===================================================== */
+
+
+const olaylar = [
+
+
+[
+"Hayatının yönünü değiştirecek bir karar vereceksin.",
+"Uzun zamandır ertelediğin bir konuda sonunda karar vereceksin.",
+"Vereceğin küçük bir karar ileride büyük bir değişime dönüşecek.",
+"İki seçenek arasında kalacağın önemli bir dönem başlayacak.",
+"Hayatında yeni bir sayfa açmana neden olacak bir karar alacaksın.",
+"Beklemediğin bir anda önemli bir seçim yapmak zorunda kalacaksın.",
+"Bir konuda artık eski düzeni sürdürmek istemediğini fark edeceksin.",
+"Uzun süredir düşündüğün bir değişimi gerçekleştirmeye yaklaşacaksın.",
+"Hayatının gidişatını etkileyen bir seçim yapacaksın.",
+"Geçmişte verdiğin bir kararın sonuçlarını daha net görmeye başlayacaksın."
+],
+
+
+[
+"Beklemediğin biriyle önemli bir karşılaşma yaşayacaksın.",
+"Tesadüfen tanışacağın biri hayatında iz bırakacak.",
+"Hiç planlamadığın bir ortamda yeni biriyle tanışacaksın.",
+"Geçmişinden biri tekrar karşına çıkacak.",
+"Bir yabancıyla yapacağın kısa bir konuşma aklında kalacak.",
+"Yeni tanıştığın biriyle beklenmedik bir bağ oluşacak.",
+"Bir arkadaşının tanıştırdığı kişi hayatında önem kazanacak.",
+"Uzun zamandır görmediğin biriyle yolların yeniden kesişecek.",
+"Bir tesadüf seni hiç beklemediğin bir insanla karşılaştıracak.",
+"Hayatına yeni girecek biri bazı düşüncelerini değiştirecek."
+],
+
+
+[
+"Hayatında yeni bir başlangıç yapacaksın.",
+"Uzun zamandır beklediğin yeni dönem başlayacak.",
+"Eski bir dönemi kapatıp yeni bir sayfa açacaksın.",
+"Yeni bir çevreye veya ortama gireceksin.",
+"Hayatında temiz bir başlangıç yapma fırsatı bulacaksın.",
+"Geçmişte kalan bir konuyu geride bırakacaksın.",
+"Yeni bir düzen kurmaya başlayacaksın.",
+"Bir süredir düşündüğün başlangıç sonunda gerçekleşecek.",
+"Hayatında değişim hissinin belirginleştiği bir dönem başlayacak.",
+"Yeni bir fırsat seni farklı bir hayata doğru yönlendirecek."
+],
+
+
+[
+"Önemli bir fırsat karşına çıkacak.",
+"Beklemediğin bir teklif alacaksın.",
+"Bir konuda şansının döndüğünü hissedeceksin.",
+"Uzun süredir beklediğin fırsat beklenmedik şekilde gelecek.",
+"Bir fırsat ilk başta küçük görünecek ancak önemi sonradan anlaşılacak.",
+"Birinin sana sunduğu seçenek hayatını etkileyebilir.",
+"Yeni bir kapının açıldığını fark edeceksin.",
+"Bir fırsat için doğru zamanda doğru yerde olacaksın.",
+"Beklenmedik bir teklif seni düşünmeye zorlayacak.",
+"Bir konuda kendini gösterebileceğin önemli bir fırsat çıkacak."
+],
+
+
+[
+"Beklenmedik bir yolculuğa çıkacaksın.",
+"Planlarında olmayan bir seyahat gündemine gelecek.",
+"Bir yolculuk sana farklı bir bakış açısı kazandıracak.",
+"Uzakta bulunan biriyle görüşmek için yola çıkacaksın.",
+"Bir seyahat sırasında önemli bir tesadüf yaşayacaksın.",
+"Gitmeyi hiç düşünmediğin bir yere gideceksin.",
+"Kısa bir yolculuk beklediğinden daha önemli hale gelecek.",
+"Bir seyahat hayatındaki bazı planları değiştirecek.",
+"Yolculuk sırasında tanışacağın biri aklında kalacak.",
+"Bir yolculuk uzun zamandır unuttuğun bir şeyi hatırlatacak."
+],
+
+
+[
+"Bir insanla olan ilişkinin yönü değişecek.",
+"Yakın olduğun biriyle önemli bir konuşma yapacaksın.",
+"Bir arkadaşlığın farklı bir boyuta geçtiğini fark edeceksin.",
+"Bir insanla arandaki mesafe kapanacak.",
+"Bir ilişkin konusunda gerçek düşüncelerini söyleyeceksin.",
+"Uzun süredir konuşmadığın biriyle yeniden iletişim kuracaksın.",
+"Bir ilişkin hakkında önemli bir karar vereceksin.",
+"Bir insanın sana düşündüğünden daha fazla değer verdiğini anlayacaksın.",
+"Bir konuşma iki insan arasındaki dengeleri değiştirecek.",
+"Bir ilişkiyi geride bırakmak veya sürdürmek arasında kalacaksın."
+],
+
+
+[
+"Uzun zamandır beklediğin bir haber gelecek.",
+"Telefonuna gelecek bir mesaj seni şaşırtacak.",
+"Beklemediğin bir telefon konuşması yaşayacaksın.",
+"Bir başvurunun veya isteğinin sonucu gelecek.",
+"Geçmişten gelen bir haber seni düşündürecek.",
+"Birinden uzun zamandır beklediğin cevabı alacaksın.",
+"Bir haber planlarını değiştirecek.",
+"Sabah saatlerinde alacağın bir mesaj gününün yönünü değiştirecek.",
+"Beklediğin haber düşündüğünden farklı bir şekilde gelecek.",
+"Bir haber sana yeni bir karar alma nedeni verecek."
+],
+
+
+[
+"İş veya kariyer hayatında yeni bir gelişme olacak.",
+"Yeni bir iş fırsatıyla karşılaşacaksın.",
+"Çalışma hayatında yön değiştirme düşüncesi oluşacak.",
+"Bir konuda yeteneğinin fark edildiğini göreceksin.",
+"Profesyonel hayatında yeni bir sorumluluk üstleneceksin.",
+"Bir proje veya çalışma sana yeni kapılar açacak.",
+"İş hayatında beklenmedik bir teklif alacaksın.",
+"Kariyerinle ilgili önemli bir konuşma yapacaksın.",
+"Çalışma düzenini değiştirme ihtiyacı hissedeceksin.",
+"Bir hedefin için ciddi bir adım atacaksın."
+],
+
+
+[
+"Para konusunda beklenmedik bir gelişme yaşayacaksın.",
+"Uzun süredir beklediğin bir ödeme eline geçecek.",
+"Finansal bir karar vermen gerekecek.",
+"Beklenmedik bir masraf ortaya çıkacak.",
+"Bir para fırsatıyla karşılaşacaksın.",
+"Maddi durumunu değiştirecek bir karar alacaksın.",
+"Bir borç veya ödeme konusu gündeminden çıkacak.",
+"Para konusunda yeni bir plan yapacaksın.",
+"Beklemediğin bir yerden maddi destek göreceksin.",
+"Finansal açıdan daha dikkatli olmaya başlayacağın bir dönem gelecek."
+],
+
+
+[
+"Uzun zamandır istediğin bir şeyi gerçekleştireceksin.",
+"Bir hayalin için ilk gerçek adımı atacaksın.",
+"Geçmişte yarım bıraktığın bir şeyi tamamlayacaksın.",
+"Uzun zamandır ertelediğin planı uygulamaya başlayacaksın.",
+"Bir hedefinin sandığından daha yakın olduğunu fark edeceksin.",
+"Hayalini kurduğun bir gelişme gerçekleşmeye yaklaşacak.",
+"Bir hedef için ciddi bir fedakarlık yapacaksın.",
+"Uzun süredir bekleyen bir plan tekrar gündeme gelecek.",
+"Bir isteğin konusunda beklemediğin bir destek alacaksın.",
+"Hayatında önemli bir hedef belirleyeceksin."
+],
+
+
+[
+"Yeni bir eve veya farklı bir yaşam alanına geçme fikri gündeme gelecek.",
+"Yaşadığın yerle ilgili önemli bir karar vereceksin.",
+"Bir taşınma ihtimali ortaya çıkacak.",
+"Yeni bir şehir veya semt hakkında düşünmeye başlayacaksın.",
+"Yaşam alanında büyük bir değişiklik yapacaksın.",
+"Ev hayatında yeni bir düzen kuracaksın.",
+"Bir yer değişikliği hayatındaki başka değişimleri de beraberinde getirecek.",
+"Beklemediğin bir taşınma fırsatı çıkacak.",
+"Bir ev veya yaşam alanı konusunda önemli bir haber alacaksın.",
+"Bulunduğun ortamdan uzaklaşma isteğin güçlenecek."
+],
+
+
+[
+"Bir sırrın ortaya çıkması bazı dengeleri değiştirecek.",
+"Uzun süredir saklanan bir gerçek hakkında bilgi edineceksin.",
+"Birinin senden sakladığı bir şeyi öğreneceksin.",
+"Geçmişle ilgili bilmediğin bir detay ortaya çıkacak.",
+"Bir konuşma sırasında beklemediğin bir gerçeği duyacaksın.",
+"Bir olayın arkasındaki gerçek nedenleri anlayacaksın.",
+"Geçmişte yaşanan bir konunun farklı yüzünü göreceksin.",
+"Bir insanın gerçek düşüncelerini öğreneceksin.",
+"Uzun süredir cevaplanmayan bir soru cevap bulacak.",
+"Bir gerçek ilk başta şaşırtacak ancak sonradan anlam kazanacak."
+],
+
+
+[
+"Hayatına yeni bir hobi veya ilgi alanı girecek.",
+"Yeni bir yetenek keşfedeceksin.",
+"Hiç denemediğin bir şeyi denemeye karar vereceksin.",
+"Yeni bir uğraş günlük hayatının önemli bir parçası olacak.",
+"Bir konuda düşündüğünden daha yetenekli olduğunu göreceksin.",
+"Yeni bir şey öğrenmeye başlayacaksın.",
+"Bir merakın seni farklı bir alana yönlendirecek.",
+"Uzun süre devam edeceğin yeni bir alışkanlık kazanacaksın.",
+"Birinin önerdiği şeyi denemek hoşuna gidecek.",
+"Yeni bir beceri gelecekte işine yarayacak."
+],
+
+
+[
+"Eski bir arkadaşınla yeniden iletişim kuracaksın.",
+"Geçmişten biri sana ulaşacak.",
+"Uzun zamandır görmediğin bir arkadaşınla buluşacaksın.",
+"Eski bir anı beklenmedik şekilde yeniden gündeme gelecek.",
+"Geçmişindeki bir insanla yolların kesişecek.",
+"Eski bir dostluğun yeniden başlaması mümkün olacak.",
+"Bir arkadaşından beklemediğin bir teklif alacaksın.",
+"Geçmişten gelen bir mesaj seni şaşırtacak.",
+"Eski çevrenden biri sana önemli bir haber verecek.",
+"Bir arkadaşlığın neden bittiğini daha iyi anlayacaksın."
+],
+
+
+[
+"Bir konuda cesaretini toplayıp ilk adımı atacaksın.",
+"Uzun süredir korktuğun bir şeyi deneyeceksin.",
+"Birinin karşısında düşüncelerini açıkça söyleyeceksin.",
+"Risk almaktan çekinmediğin bir dönem başlayacak.",
+"Bir fırsatı değerlendirmek için cesur davranacaksın.",
+"Kendin için önemli bir sınır koyacaksın.",
+"Bir konuda artık sessiz kalmamaya karar vereceksin.",
+"Beklenmedik bir anda cesaret gerektiren bir karar vereceksin.",
+"Bir korkunun düşündüğün kadar güçlü olmadığını anlayacaksın.",
+"Hayatındaki bir konuda kontrolü yeniden eline alacaksın."
+],
+
+
+[
+"Hayatında unutamayacağın bir gün yaşayacaksın.",
+"Uzun süre hatırlayacağın bir olay meydana gelecek.",
+"Beklemediğin bir anda çok özel bir an yaşayacaksın.",
+"Bir günün diğerlerinden tamamen farklı olduğunu hissedeceksin.",
+"Yaşayacağın bir olay uzun süre aklından çıkmayacak.",
+"Bir tesadüf sana yıllarca anlatacağın bir anı bırakacak.",
+"Hayatındaki önemli anlardan biri gerçekleşecek.",
+"Bir gün beklediğinden çok daha farklı başlayacak.",
+"Bir olayın etkisi uzun süre devam edecek.",
+"Bir anın değerini ancak zaman geçtikten sonra anlayacaksın."
+],
+
+
+[
+"Yeni bir sosyal çevreye gireceksin.",
+"Kalabalık bir ortamda dikkatini çeken biri olacak.",
+"Yeni insanlarla tanışacağın bir dönem başlayacak.",
+"Bir grup veya topluluk hayatında önem kazanacak.",
+"Beklenmedik bir davet alacaksın.",
+"Yeni bir çevre sana farklı bakış açıları kazandıracak.",
+"Bir etkinlikte önemli bir tanışma yaşayacaksın.",
+"Arkadaş çevrende değişiklik olacak.",
+"Bir topluluğun parçası haline geleceksin.",
+"Yeni çevrenden biri hayatında kalıcı hale gelecek."
+],
+
+
+[
+"Beklenmedik bir hediye veya jest alacaksın.",
+"Birinin sana yaptığı küçük bir iyilik seni şaşırtacak.",
+"Hiç beklemediğin birinden güzel bir davranış göreceksin.",
+"Bir sürpriz planını değiştirecek.",
+"Bir insan sana değer verdiğini beklenmedik şekilde gösterecek.",
+"Beklemediğin bir kutlama veya buluşma gerçekleşecek.",
+"Birinden güzel bir haberle birlikte küçük bir sürpriz gelecek.",
+"Bir olay seni hazırlıksız yakalayacak.",
+"Hiç beklemediğin bir anda sevineceksin.",
+"Birinin yaptığı jest uzun süre aklında kalacak."
+],
+
+
+[
+"Bir konuda ikinci bir şans elde edeceksin.",
+"Geçmişte kaçırdığın bir fırsat yeniden karşına çıkacak.",
+"Yarım kalan bir işi tamamlama fırsatı bulacaksın.",
+"Eski bir plan tekrar uygulanabilir hale gelecek.",
+"Bir insan sana yeniden güvenecek.",
+"Bir hatayı düzeltme şansın olacak.",
+"Geçmişte verdiğin bir kararın telafisi mümkün olacak.",
+"Uzun zamandır bekleyen bir konu yeniden açılacak.",
+"Bir kapının tamamen kapanmadığını fark edeceksin.",
+"Bir konuda kendini yeniden kanıtlama fırsatı bulacaksın."
+],
+
+
+[
+"Hayatında büyük bir değişim dönemi başlayacak.",
+"Uzun süredir aynı kalan bir şey tamamen değişecek.",
+"Beklenmedik bir gelişme düzenini değiştirecek.",
+"Hayatındaki önceliklerin değiştiğini fark edeceksin.",
+"Bir dönem sona erecek ve başka bir dönem başlayacak.",
+"Çevrendeki değişiklikler seni de değişime zorlayacak.",
+"Alıştığın düzenin dışına çıkacaksın.",
+"Bir değişimin başlangıcında olduğunu hissedeceksin.",
+"Hayatındaki bazı şeyleri yeniden düzenleyeceksin.",
+"Önümüzdeki dönemin eskisinden çok farklı olacağını fark edeceksin."
+],
+
+
+[
+"Bir konuda beklenmedik bir başarı elde edeceksin.",
+"Çaba gösterdiğin bir şeyin sonucunu alacaksın.",
+"Bir hedefinde ilerleme kaydettiğini göreceksin.",
+"Birinin senden beklemediği bir şeyi başaracaksın.",
+"Uzun süredir uğraştığın konu sonuç vermeye başlayacak.",
+"Bir başarın çevrendeki insanların dikkatini çekecek.",
+"Küçük bir başarı sana daha büyük bir hedef verecek.",
+"Bir konuda kendine olan güvenin artacak.",
+"Beklediğinden daha iyi bir sonuç alacaksın.",
+"Bir başarının başlangıç noktası olacak bir gelişme yaşayacaksın."
+],
+
+
+[
+"Bir hata sana önemli bir ders verecek.",
+"Geçmişte yaptığın bir yanlışın nedenini anlayacaksın.",
+"Bir olay sana farklı düşünmeyi öğretecek.",
+"Bir deneyim bakış açını değiştirecek.",
+"Yaşayacağın küçük bir sorun önemli bir farkındalık yaratacak.",
+"Bir insanın davranışı sana önemli bir şey öğretecek.",
+"Bir kararın sonucundan ders çıkaracaksın.",
+"Bir konuda artık aynı hatayı yapmak istemediğini fark edeceksin.",
+"Yaşadığın bir olay seni daha dikkatli hale getirecek.",
+"Bir deneyim gelecekte vereceğin kararları etkileyecek."
+],
+
+
+[
+"Bir konuda beklenmedik bir destek alacaksın.",
+"Hiç beklemediğin biri zor bir anda yanında olacak.",
+"Bir arkadaşın sana önemli bir konuda yardımcı olacak.",
+"Bir insan sana yeni bir kapı açacak.",
+"Beklemediğin birinden tavsiye alacaksın.",
+"Birinin desteği sayesinde bir problemi daha kolay çözeceksin.",
+"Yakınındaki bir insan önemli bir anda yanında olacak.",
+"Bir destek sayesinde kararın netleşecek.",
+"Bir insanın sana olan güvenini hissedeceksin.",
+"Birinin yardımı hayatındaki küçük bir sorunu çözecek."
+],
+
+
+[
+"Bir konuda beklemek yerine harekete geçeceksin.",
+"Uzun süredir ertelediğin işi tamamlayacaksın.",
+"Bir planı uygulamaya koyacaksın.",
+"Hayatında düzen kurmak için ciddi bir adım atacaksın.",
+"Bir hedef için ilk somut hareketi yapacaksın.",
+"Bir kararın arkasında duracaksın.",
+"Bir işi sonuçlandırmak için harekete geçeceksin.",
+"Bir süredir düşündüğün değişiklik başlayacak.",
+"Bir konuda beklediğin anın geldiğini hissedeceksin.",
+"Planlarını gerçeğe dönüştürmek için ilk adımı atacaksın."
+],
+
+
+[
+"Bir tesadüf hayatındaki önemli bir bağlantıyı ortaya çıkaracak.",
+"Tam zamanında karşılaşacağın biri sana yardımcı olacak.",
+"Tesadüfen duyacağın bir konuşma sana fikir verecek.",
+"Beklenmedik bir karşılaşma planlarını değiştirecek.",
+"Bir rastlantı sayesinde yeni bir fırsat doğacak.",
+"Hiç planlamadığın bir olay seni doğru yere götürecek.",
+"Bir tesadüf geçmişteki bir olayla bağlantı kuracak.",
+"Beklenmedik bir karşılaşma sana bir şeyi hatırlatacak.",
+"Bir rastlantının sonucunda yeni bir karar vereceksin.",
+"Tesadüfen öğrendiğin bir bilgi önemli hale gelecek."
+],
+
+
+[
+"Bir konuda uzun süredir beklediğin cevap netleşecek.",
+"Belirsiz kalan bir durum sonunda açıklığa kavuşacak.",
+"Kararsız kaldığın bir konuda cevabını bulacaksın.",
+"Bir soru uzun zaman sonra cevaplanacak.",
+"Bir olayın sonucu beklediğinden farklı olacak.",
+"Beklediğin sonuç seni yeni bir karar almaya yöneltecek.",
+"Bir konuda kafandaki soru işaretleri azalacak.",
+"Belirsizlik yerini net bir plana bırakacak.",
+"Bir gelişmenin sonucunu öğreneceksin.",
+"Uzun zamandır cevapsız kalan bir konu kapanacak."
+],
+
+
+[
+"Bir kutlama yapacağın güzel bir gelişme yaşayacaksın.",
+"Yakınlarınla birlikte sevineceğin bir haber alacaksın.",
+"Bir başarı veya gelişme için kutlama yapılacak.",
+"Uzun zamandır beklenen güzel bir gün gelecek.",
+"Bir buluşma beklediğinden daha güzel geçecek.",
+"Sevdiğin insanlarla özel bir an paylaşacaksın.",
+"Bir gelişme sana uzun süre iyi hissettirecek.",
+"Beklenmedik bir mutluluk yaşayacaksın.",
+"Yakın çevrenden güzel bir haber gelecek.",
+"Bir günün sonunda kendini uzun zamandır hissetmediğin kadar iyi hissedeceksin."
+],
+
+
+[
+"Geçmişte verdiğin bir kararın etkisini göreceksin.",
+"Eski bir seçimin sonuçları tekrar karşına çıkacak.",
+"Geçmişte başlattığın bir şey yeniden gündeme gelecek.",
+"Bir anın veya kararın bugünkü hayatını nasıl etkilediğini fark edeceksin.",
+"Geçmişten gelen bir konu gelecekteki planlarını etkileyecek.",
+"Eski bir tanışıklık yeni bir fırsata dönüşecek.",
+"Geçmişte yaptığın bir iyiliğin karşılığını göreceksin.",
+"Yıllar önce yaşadığın bir olayın anlamı değişecek.",
+"Geçmişte bıraktığın bir konu tekrar önüne gelecek.",
+"Eski bir kararın sana yeni bir kapı açtığını göreceksin."
+],
+
+
+[
+"Bir dönemi kapatıp rahatlayacaksın.",
+"Uzun süredir taşıdığın bir yükten kurtulacaksın.",
+"Hayatında artık sana iyi gelmeyen bir şeyi bırakacaksın.",
+"Bir alışkanlığını değiştirmeye karar vereceksin.",
+"Geçmişte kalan bir konuyu tamamen kapatacaksın.",
+"Bir insanla veya durumla ilgili son kararını vereceksin.",
+"Eski düzenini bırakıp yeni bir düzen kuracaksın.",
+"Bir şeyin artık hayatında yeri olmadığını fark edeceksin.",
+"Bir dönemin sona ermesi sana beklenmedik bir rahatlama getirecek.",
+"Hayatında sadeleşme başlayacak."
+],
+
+
+[
+"Hayatında çok önemli bir dönüm noktası yaşayacaksın.",
+"Karşına çıkacak bir olay gelecekteki planlarını etkileyecek.",
+"Bir gelişme sana 'bundan sonrası farklı olacak' dedirtecek.",
+"Hayatındaki önemli dönüm noktalarından biri gerçekleşecek.",
+"Bir gün geriye dönüp bu tarihi hatırlayacaksın.",
+"Yaşayacağın bir olay sonraki yıllarda önemli hale gelecek.",
+"Bir gelişmenin etkisini uzun yıllar hissedeceksin.",
+"Bir karar veya karşılaşma gelecekteki hayatını değiştirecek.",
+"Bu dönemde yaşanacak bir olay hayat hikâyende özel bir yere sahip olacak.",
+"Hayatının yeni bir bölümünün başlangıcını yaşayacaksın."
+]
+
+];
+
+
+/* =====================================================
+   300 OLAYI TEK LİSTEYE ÇEVİR
+   ===================================================== */
+
+
+let tumOlaylar = [];
+
+
+olaylar.forEach((grup, kategoriIndex) => {
+
+    grup.forEach((metin, varyasyonIndex) => {
+
+        tumOlaylar.push({
+
+            id:
+                kategoriIndex * 10
+                + varyasyonIndex
+                + 1,
+
+            metin:
+                metin
+
+        });
+
+    });
+
+});
+
+
+/* =====================================================
+   BURÇ HESAPLAMA
+   ===================================================== */
+
+
+function burcBul(tarih) {
+
+
+    const parcalar =
+        tarih.split("-");
+
+
+    const ay =
+        Number(parcalar[1]);
+
+
+    const gun =
+        Number(parcalar[2]);
+
+
+    if (
+        (ay === 3 && gun >= 21) ||
+        (ay === 4 && gun <= 19)
+    )
+        return "Koç";
+
+
+    if (
+        (ay === 4 && gun >= 20) ||
+        (ay === 5 && gun <= 20)
+    )
+        return "Boğa";
+
+
+    if (
+        (ay === 5 && gun >= 21) ||
+        (ay === 6 && gun <= 20)
+    )
+        return "İkizler";
+
+
+    if (
+        (ay === 6 && gun >= 21) ||
+        (ay === 7 && gun <= 22)
+    )
+        return "Yengeç";
+
+
+    if (
+        (ay === 7 && gun >= 23) ||
+        (ay === 8 && gun <= 22)
+    )
+        return "Aslan";
+
+
+    if (
+        (ay === 8 && gun >= 23) ||
+        (ay === 9 && gun <= 22)
+    )
+        return "Başak";
+
+
+    if (
+        (ay === 9 && gun >= 23) ||
+        (ay === 10 && gun <= 22)
+    )
+        return "Terazi";
+
+
+    if (
+        (ay === 10 && gun >= 23) ||
+        (ay === 11 && gun <= 21)
+    )
+        return "Akrep";
+
+
+    if (
+        (ay === 11 && gun >= 22) ||
+        (ay === 12 && gun <= 21)
+    )
+        return "Yay";
+
+
+    if (
+        (ay === 12 && gun >= 22) ||
+        (ay === 1 && gun <= 19)
+    )
+        return "Oğlak";
+
+
+    if (
+        (ay === 1 && gun >= 20) ||
+        (ay === 2 && gun <= 18)
+    )
+        return "Kova";
+
+
+    return "Balık";
+
+}
+
+
+/* =====================================================
+   DOĞUM TARİHİ DEĞİŞİNCE BURCU GÖSTER
+   ===================================================== */
+
+
+document
+    .getElementById("birthDate")
+    .addEventListener("change", function() {
+
+
+        if (this.value) {
+
+            const burc =
+                burcBul(this.value);
+
+
+            document
+                .getElementById("zodiac")
+                .innerText =
+                burc;
+
+        }
+
+    });
+
+
+/* =====================================================
+   SAYI HESAPLAMA
+   ===================================================== */
+
+
+function sayiOlustur(metin) {
+
+
+    let toplam = 0;
+
+
+    for (
+        let i = 0;
+        i < metin.length;
+        i++
+    ) {
+
+        const kod =
+            metin.charCodeAt(i);
+
+
+        toplam += kod;
+
+    }
+
+
+    return toplam;
+
+}
+
+
+/* =====================================================
+   TARİH FORMATLA
+   ===================================================== */
+
+
+function tarihFormatla(tarih) {
+
+
+    const aylar = [
+
+        "Ocak",
+        "Şubat",
+        "Mart",
+        "Nisan",
+        "Mayıs",
+        "Haziran",
+        "Temmuz",
+        "Ağustos",
+        "Eylül",
+        "Ekim",
+        "Kasım",
+        "Aralık"
+
+    ];
+
+
+    return (
+
+        tarih.getDate()
+        + " "
+        + aylar[tarih.getMonth()]
+        + " "
+        + tarih.getFullYear()
+
+    );
+
+}
+
+
+/* =====================================================
+   ANALİZİ BAŞLAT
+   ===================================================== */
+
+
+function startAnalysis() {
+
+
+    const isim =
+        document
+        .getElementById("name")
+        .value
+        .trim();
+
+
+    const dogumTarihi =
+        document
+        .getElementById("birthDate")
+        .value;
+
+
+    if (!isim) {
+
+        alert("Lütfen adınızı girin.");
+
+        return;
+
+    }
+
+
+    if (!dogumTarihi) {
+
+        alert("Lütfen doğum tarihinizi girin.");
+
+        return;
+
+    }
+
+
+    const burc =
+        burcBul(dogumTarihi);
+
+
+    document
+        .getElementById("start")
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById("analysis")
+        .style.display =
+        "block";
+
+
+    const mesajlar = [
+
+        "Doğum tarihi analiz ediliyor...",
+
+        "Burç çizgisi hesaplanıyor...",
+
+        "İsim analizi gerçekleştiriliyor...",
+
+        "Yaşam çizgisi oluşturuluyor...",
+
+        "Geçmiş dönemler taranıyor...",
+
+        "Önemli dönüm noktaları aranıyor...",
+
+        "300 farklı olay karşılaştırılıyor...",
+
+        "En güçlü eşleşme belirleniyor..."
+
+    ];
+
+
+    let adim = 0;
+
+
+    const loadingText =
+        document
+        .getElementById("loadingText");
+
+
+    const progressBar =
+        document
+        .getElementById("progressBar");
+
+
+    const interval =
+        setInterval(() => {
+
+
+            loadingText.innerText =
+                mesajlar[adim];
+
+
+            progressBar.style.width =
+                (
+                    (adim + 1)
+                    /
+                    mesajlar.length
+                    *
+                    100
+                )
+                + "%";
+
+
+            adim++;
+
+
+            if (
+                adim >=
+                mesajlar.length
+            ) {
+
+
+                clearInterval(interval);
+
+
+                setTimeout(() => {
+
+
+                    sonucGoster(
+
+                        isim,
+
+                        dogumTarihi,
+
+                        burc
+
+                    );
+
+
+                }, 700);
+
+            }
+
+
+        }, 650);
+
+}
+
+
+/* =====================================================
+   SONUÇ
+   ===================================================== */
+
+
+function sonucGoster(
+
+    isim,
+
+    dogumTarihi,
+
+    burc
+
+) {
+
+
+    const simdi =
+        new Date();
+
+
+    /*
+       İSİM + DOĞUM TARİHİ + BURÇ
+       BİRLİKTE TOHUM OLUŞTURUYOR.
+    */
+
+
+    const isimSayisi =
+        sayiOlustur(isim);
+
+
+    const tarihSayisi =
+        sayiOlustur(dogumTarihi);
+
+
+    const burcSayisi =
+        sayiOlustur(burc);
+
+
+    /*
+       BUGÜNÜN TARİHİ
+    */
+
+
+    const bugunSayisi =
+
+        simdi.getFullYear()
+        * 10000
+
+        +
+
+        (simdi.getMonth() + 1)
+        * 100
+
+        +
+
+        simdi.getDate();
+
+
+    /*
+       ANA TOHUM
+    */
+
+
+    const tohum =
+
+        Math.abs(
+
+            isimSayisi * 31
+
+            +
+
+            tarihSayisi * 17
+
+            +
+
+            burcSayisi * 13
+
+            +
+
+            bugunSayisi * 7
+
+        );
+
+
+    /*
+       300 OLAYDAN BİRİNİ SEÇ
+    */
+
+
+    const olayIndex =
+
+        tohum
+        %
+        tumOlaylar.length;
+
+
+    const secilenOlay =
+
+        tumOlaylar[olayIndex];
+
+
+    /*
+       GELECEK TARİH
+    */
+
+
+    const gunFarki =
+
+        30
+
+        +
+
+        (
+            tohum * 11
+            % 1800
+        );
+
+
+    const gelecekTarih =
+        new Date();
+
+
+    gelecekTarih.setDate(
+
+        gelecekTarih.getDate()
+        +
+        gunFarki
+
+    );
+
+
+    /*
+       SONUÇ EKRANI
+    */
+
+
+    document
+        .getElementById("analysis")
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById("result")
+        .style.display =
+        "block";
+
+
+    document
+        .getElementById("personName")
+        .innerText =
+
+        isim;
+
+
+    document
+        .getElementById("personZodiac")
+        .innerText =
+
+        burc
+        +
+        " • "
+        +
+        "Yaşam çizgisi analizi";
+
+
+    document
+        .getElementById("eventDate")
+        .innerText =
+
+        tarihFormatla(
+            gelecekTarih
+        );
+
+
+    document
+        .getElementById("eventTitle")
+        .innerText =
+
+        secilenOlay.metin;
+
+
+    document
+        .getElementById("eventDetail")
+        .innerText =
+
+        isim
+        +
+        ", yaşam çizgin üzerinde yapılan analizde "
+        +
+        burc
+        +
+        " etkisiyle bağlantılı güçlü bir dönüm noktası tespit edildi. "
+        +
+        "Bu tarihin senin için neden önemli olacağı zaman içinde ortaya çıkacak.";
+
+
+}
+
+
+/*
+   KONTROL
+*/
+
+console.log(
+
+    "Toplam olay:",
+    tumOlaylar.length
+
+);
+
+</script>
+
+</body>
+</html>
